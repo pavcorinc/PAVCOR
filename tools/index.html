@@ -106,8 +106,8 @@ textarea{resize:vertical;min-height:70px;font-size:.85rem;border:1px solid rgba(
 <div class="sec-label">📐 Driveway Size</div>
 <div class="card">
 <div class="dim-grid">
-<div class="dim-field"><div class="field-label">Length</div><input type="number" id="len" placeholder="65" inputmode="decimal" oninput="updateSqft()"><span class="dim-unit">ft</span></div>
-<div class="dim-field"><div class="field-label">Width</div><input type="number" id="wid" placeholder="17" inputmode="decimal" oninput="updateSqft()"><span class="dim-unit">ft</span></div>
+<div class="dim-field"><div class="field-label">Length</div><input type="number" id="len" placeholder="65" inputmode="decimal" oninput="updateSqft()" onchange="updateSqft()"><span class="dim-unit">ft</span></div>
+<div class="dim-field"><div class="field-label">Width</div><input type="number" id="wid" placeholder="17" inputmode="decimal" oninput="updateSqft()" onchange="updateSqft()"><span class="dim-unit">ft</span></div>
 </div>
 <div class="sqft-bar"><span class="sqft-label">Square Footage</span><span class="sqft-val" id="sqft-display">— SQ FT</span></div>
 </div>
