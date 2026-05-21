@@ -1,479 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ORAO — Support That Never Sleeps. Never Quits.</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Inter for body/nav, Playfair Display for the hero serif headline (matches screenshot exactly) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #0a0e17;
-      color: #ffffff;
-      margin: 0;
-      overflow-x: hidden;
-    }
-
-    /* ── HERO HEADLINE ──────────────────────────────────────────
-       CRITICAL: screenshot uses a heavy serif display font.
-       Playfair Display Black (weight 900) matches the editorial
-       serif letterforms visible in the screenshot exactly.
-    ────────────────────────────────────────────────────────── */
-    h1 {
-      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-      font-weight: 900;
-      font-size: clamp(3.8rem, 11vw, 10rem);
-      line-height: 0.92;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      text-align: center;
-      margin: 0;
-    }
-
-    .hero-paragraph {
-      color: #9ca3af;
-      font-size: 1.25rem;
-      line-height: 1.7;
-      max-width: 48rem;
-      opacity: 0.95;
-      text-align: center;
-    }
-
-    /* ── NAVBAR ──────────────────────────────────────────────── */
-    nav {
-      background: rgba(10,14,23,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      padding: 20px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nav-logo-img {
-      height: 40px;
-      width: auto;
-    }
-
-    .nav-brand {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-
-    .live-badge {
-      margin-left: 8px;
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.35);
-      color: #86efac;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 4px 14px;
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .live-dot {
-      width: 9px;
-      height: 9px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: pulse-dot 2s cubic-bezier(0.4,0,0.6,1) infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.35; }
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-    }
-
-    .nav-links a {
-      color: #e5e7eb;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 400;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: #ffffff;
-    }
-
-    .early-access-btn {
-      background: rgba(255,255,255,0.08);
-      color: #ffffff;
-      border: 1px solid rgba(255,255,255,0.15);
-      padding: 12px 32px;
-      border-radius: 9999px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .early-access-btn:hover {
-      background: rgba(255,255,255,0.15);
-    }
-
-    /* ── ANIMATED CANVAS ─────────────────────────────────────── */
-    #canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.14;
-      mix-blend-mode: screen;
-    }
-
-    /* ── EAGLE LOGO BACKGROUND ───────────────────────────────── 
-       The geometric low-poly eagle is centered behind the text.
-       opacity: 0.09 matches the screenshot's very subtle overlay.
-    ────────────────────────────────────────────────────────── */
-    .hero-logo-bg {
-      position: absolute;
-      inset: 0;
-      background: url('/logo.png') center / 75% no-repeat;
-      opacity: 0.09;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* ── HERO SECTION ────────────────────────────────────────── */
-    .hero-section {
-      position: relative;
-      z-index: 10;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 0 24px;
-      padding-top: 80px;
-    }
-
-    .hero-eyebrow {
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: #6b7280;
-      font-size: 0.8rem;
-      font-weight: 500;
-      margin-bottom: 24px;
-    }
-
-    /* ── STAT CARDS ──────────────────────────────────────────── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
-      margin-top: 80px;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    @media (max-width: 768px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-      .nav-links { display: none; }
-    }
-
-    .stat-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 40px 24px;
-      text-align: center;
-      transition: transform 0.2s ease;
-    }
-
-    .stat-card:hover {
-      transform: scale(1.05);
-    }
-
-    .stat-number {
-      color: #ffffff;
-      font-weight: 900;
-      font-size: 3.5rem;
-      line-height: 1;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .stat-label {
-      color: #9ca3af;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      margin-top: 8px;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    /* ── WAITLIST FORM ───────────────────────────────────────── */
-    .waitlist-wrap {
-      margin-top: 96px;
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .waitlist-wrap form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .waitlist-wrap input[type="email"] {
-      padding: 20px 32px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 9999px;
-      font-size: 1.05rem;
-      color: #ffffff;
-      outline: none;
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.2s;
-    }
-
-    .waitlist-wrap input[type="email"]::placeholder { color: #6b7280; }
-    .waitlist-wrap input[type="email"]:focus { border-color: rgba(255,255,255,0.3); }
-
-    .waitlist-wrap button[type="submit"] {
-      padding: 20px;
-      background: #ffffff;
-      color: #000000;
-      border: none;
-      border-radius: 9999px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: background 0.2s;
-    }
-
-    .waitlist-wrap button[type="submit"]:hover {
-      background: #e5e7eb;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAVCOR — Driveway Quote</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#070707;color:#e8e2d4;font-family:'Inter Tight',sans-serif;min-height:100vh;overflow-x:hidden}
+canvas#c{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:24px 16px 60px}
+.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hdr-logo{font-size:1.1rem;font-weight:600;letter-spacing:.15em;color:#f0ead8}
+.hdr-badge{font-size:.55rem;letter-spacing:.12em;color:rgba(201,168,76,.6);border:1px solid rgba(201,168,76,.25);padding:3px 10px;border-radius:20px}
+.gold-bar{height:1px;background:linear-gradient(90deg,transparent,#C9A84C,transparent);margin:16px 0 20px}
+.sec-label{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px;margin-bottom:14px}
+.field-row{margin-bottom:12px}
+.field-label{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px}
+input[type=text],input[type=tel],input[type=number],textarea{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);color:#e8e2d4;font-family:'Inter Tight',sans-serif;font-size:.95rem;padding:6px 0;outline:none}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.2)}
+.dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dim-field{position:relative}
+.dim-unit{position:absolute;right:4px;bottom:8px;font-size:.7rem;color:rgba(255,255,255,.3)}
+.sqft-bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+.sqft-label{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.sqft-val{font-size:1.1rem;font-weight:500;color:#C9A84C;letter-spacing:.05em}
+</style>
+.weather-card{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.w-icon{font-size:1.4rem;min-width:28px}
+.w-temp{font-size:.95rem;font-weight:500;color:#f0ead8}
+.w-sub{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px}
+.w-right{text-align:right;font-size:.7rem;color:rgba(255,255,255,.4)}
+.cond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.cond-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s}
+.cond-btn.active{background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.4)}
+.cond-icon{font-size:1.3rem;margin-bottom:4px}
+.cond-name{font-size:.7rem;font-weight:600;letter-spacing:.05em;color:#e8e2d4}
+.cond-sub{font-size:.6rem;color:rgba(255,255,255,.35);margin-top:2px}
+.rate-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px;margin-bottom:14px}
+.rate-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.rate-label{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);min-width:34px}
+input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,.15);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#C9A84C;cursor:pointer}
+input[type=range]:disabled{opacity:.4}
+.rate-val{font-size:1.05rem;font-weight:500;color:#C9A84C;min-width:80px;text-align:right}
+.rate-locked{font-size:.6rem;color:rgba(201,168,76,.5);text-align:center;margin-top:4px}
+.unlock-btn{display:inline-block;margin-top:8px;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);padding:4px 12px;border-radius:20px;cursor:pointer;text-align:center}
+.pin-overlay{display:none;margin-top:10px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:12px;text-align:center}
+.pin-overlay label{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.7);display:block;margin-bottom:8px}
+.pin-input{background:transparent;border:none;border-bottom:1px solid rgba(201,168,76,.4);color:#C9A84C;font-size:1.4rem;letter-spacing:.3em;text-align:center;width:100px;outline:none;padding:4px}
+.market-ref{font-size:.6rem;color:rgba(255,255,255,.25);text-align:center;margin-top:8px}
+.coats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.coat-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.coat-btn.active{background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.4)}
+.coat-name{font-size:.8rem;font-weight:600;color:#e8e2d4}
+.coat-sub{font-size:.65rem;color:rgba(255,255,255,.35);margin-top:3px}
+.addon-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.addon-item:last-child{border-bottom:none}
+.addon-check{width:20px;height:20px;border:1px solid rgba(255,255,255,.15);border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:2px}
+.addon-check.checked{background:rgba(201,168,76,.2);border-color:#C9A84C}
+.addon-check svg{display:none}
+.addon-check.checked svg{display:block}
+.addon-name{font-size:.85rem;font-weight:500;color:#e8e2d4}
+.addon-desc{font-size:.7rem;color:rgba(255,255,255,.35);margin-top:3px;line-height:1.5}
+.addon-sub{margin-top:6px}
+.addon-price{font-size:.8rem;font-weight:500;color:#C9A84C;white-space:nowrap}
+.discount-row{display:flex;align-items:center;gap:12px;padding:10px 0;margin-top:4px}
+.discount-pill{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:2px 10px;font-size:.7rem;color:#C9A84C}
+.costs-card,.notes-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.costs-hdr,.notes-hdr{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.costs-body,.notes-body{display:none;padding:0 16px 14px}
+.costs-body.open,.notes-body.open{display:block}
+.cost-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem;color:rgba(255,255,255,.5)}
+.cost-row span:last-child{color:#e8e2d4}
+.cost-total{display:flex;justify-content:space-between;padding:10px 0 0;margin-top:8px;border-top:1px solid rgba(255,255,255,.08);font-size:.9rem;font-weight:500}
+textarea{resize:vertical;min-height:70px;font-size:.85rem;border:1px solid rgba(255,255,255,.08) !important;border-radius:8px;padding:10px;background:rgba(255,255,255,.02)}
+.gen-btn{width:100%;padding:16px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:14px;color:#C9A84C;font-family:'Inter Tight',sans-serif;font-size:.95rem;font-weight:600;letter-spacing:.06em;cursor:pointer;text-transform:uppercase;margin-bottom:14px}
+.gen-btn:hover{background:rgba(201,168,76,.2)}
+.quote-card{display:none;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:20px;margin-bottom:14px}
+.quote-card.show{display:block}
+.quote-total{font-size:2rem;font-weight:600;color:#C9A84C;text-align:center;margin-bottom:4px}
+.quote-sub{font-size:.75rem;color:rgba(255,255,255,.4);text-align:center;margin-bottom:16px}
+.quote-breakdown{font-size:.75rem;color:rgba(255,255,255,.45);line-height:2;white-space:pre-line}
+.sms-section{margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,168,76,.15)}
+.sms-label{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.sms-row{display:flex;gap:8px}
+.sms-row input{flex:1;border:1px solid rgba(255,255,255,.1) !important;border-radius:8px;padding:8px 12px;font-size:.85rem}
+.sms-btn{padding:8px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:#C9A84C;font-family:'Inter Tight',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer}
+.sms-status{font-size:.75rem;margin-top:8px;color:rgba(255,255,255,.4)}
+.footer{text-align:center;font-size:.6rem;letter-spacing:.08em;color:rgba(255,255,255,.2);margin-top:24px;text-transform:uppercase}
+</style>
 </head>
 <body>
-
-  <!-- Animated particle network canvas -->
-  <canvas id="canvas"></canvas>
-
-  <!-- Geometric eagle watermark behind hero text -->
-  <div class="hero-logo-bg"></div>
-
-  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
-  <nav>
-    <div class="nav-left">
-      <img src="/logo.png" alt="ORAO logo" class="nav-logo-img">
-      <span class="nav-brand">ORAO.</span>
-      <span class="live-badge">
-        <span class="live-dot"></span>
-        LIVE
-      </span>
+<canvas id="c"></canvas>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-logo">PAVCOR</div>
+    <div class="hdr-badge">INTERNAL · QUOTE TOOL</div>
+  </div>
+  <div class="gold-bar"></div>
+  <div class="sec-label">👤 Customer</div>
+  <div class="card">
+    <div class="field-row"><div class="field-label">Name</div><input type="text" id="cust-name" placeholder="e.g. John Smith"></div>
+    <div class="field-row"><div class="field-label">Address</div><input type="text" id="cust-addr" placeholder="e.g. 123 Oak St, Ancaster"></div>
+    <div class="field-row" style="margin-bottom:0"><div class="field-label">Phone</div><input type="tel" id="cust-phone" placeholder="e.g. 905-555-0100"></div>
+  </div>
+  <div class="sec-label">📐 Driveway Size</div>
+  <div class="card">
+    <div class="dim-grid">
+      <div class="dim-field"><div class="field-label">Length</div><input type="number" id="len" placeholder="65" inputmode="decimal" oninput="updateSqft()"><span class="dim-unit">ft</span></div>
+      <div class="dim-field"><div class="field-label">Width</div><input type="number" id="wid" placeholder="17" inputmode="decimal" oninput="updateSqft()"><span class="dim-unit">ft</span></div>
     </div>
-
-    <div class="nav-links">
-      <a href="#">Product</a>
-      <a href="#">Benefits</a>
-      <a href="#">How it Works</a>
+    <div class="sqft-bar"><span class="sqft-label">Square Footage</span><span class="sqft-val" id="sqft-display">— SQ FT</span></div>
+  </div>
+  <div class="sec-label">⛅ Site Conditions</div>
+  <div class="weather-card" id="weather-card">
+    <div class="w-icon" id="w-icon">—</div>
+    <div style="flex:1"><div class="w-temp" id="w-temp">Fetching weather…</div><div class="w-sub">Hamilton / Ancaster</div></div>
+    <div class="w-right" id="w-right"></div>
+  </div>
+  <div class="sec-label">🏚️ Surface Condition</div>
+  <div class="cond-grid">
+    <div class="cond-btn active" id="cond-good" onclick="setCond('good')"><div class="cond-icon">✅</div><div class="cond-name">GOOD</div><div class="cond-sub">Well maintained</div></div>
+    <div class="cond-btn" id="cond-fair" onclick="setCond('fair')"><div class="cond-icon">🔶</div><div class="cond-name">FAIR</div><div class="cond-sub">Not sealed in years</div></div>
+    <div class="cond-btn" id="cond-poor" onclick="setCond('poor')"><div class="cond-icon">💀</div><div class="cond-name">POOR</div><div class="cond-sub">Rough / porous</div></div>
+  </div>
+  <div class="rate-section">
+    <div class="rate-row">
+      <span class="rate-label">RATE</span>
+      <input type="range" id="rate" min="40" max="80" step="1" value="50" disabled oninput="updateRateDisplay()">
+      <span class="rate-val" id="rate-val">$0.50/ft²</span>
     </div>
-
-    <button class="early-access-btn">Early Access</button>
-  </nav>
-
-  <!-- ── HERO ───────────────────────────────────────────────── -->
-  <section class="hero-section">
-    <p class="hero-eyebrow">AI-Powered Commerce Operations</p>
-
-    <h1>
-      Support That<br>
-      Never Sleeps.<br>
-      Never Quits.
-    </h1>
-
-    <p class="hero-paragraph" style="margin-top: 40px;">
-      Autonomous AI operators that handle support, orders, inventory, and
-      customer recovery better than humans — 24/7, no burnout, no excuses.
-      Built for Shopify and DTC brands.
-    </p>
-
-    <!-- Stat cards -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number">80%</div>
-        <div class="stat-label">Ticket Reduction</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">24/7</div>
-        <div class="stat-label">Always Online</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">&lt;2s</div>
-        <div class="stat-label">Response Time</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">∞</div>
-        <div class="stat-label">Scale Limit</div>
-      </div>
+    <div style="text-align:center">
+      <div class="rate-locked" id="rate-locked-msg">🔒 Rate locked at $0.50/ft²</div>
+      <div class="unlock-btn" onclick="showPinBox()">Override Rate (Managers Only)</div>
     </div>
-
-    <!-- Waitlist form -->
-    <div id="waitlist" class="waitlist-wrap">
-      <form name="orao-waitlist" method="POST" data-netlify="true">
-        <input type="hidden" name="form-name" value="orao-waitlist">
-        <input type="email" name="email" placeholder="your@email.com" required>
-        <button type="submit">Join the Precision Flock</button>
-      </form>
+    <div class="pin-overlay" id="pin-overlay">
+      <label>Manager PIN</label>
+      <input class="pin-input" type="password" maxlength="4" inputmode="numeric" oninput="checkPin(this.value)" placeholder="••••">
     </div>
-  </section>
+    <div class="market-ref">Hamilton / Ancaster local market <strong>$0.40 – $0.55 / ft² avg $0.50</strong></div>
+  </div>
+  <div class="sec-label">🪣 Coats</div>
+  <div class="coats-row">
+    <div class="coat-btn active" id="coat-1" onclick="setCoats(1)"><div class="coat-name">1 COAT</div><div class="coat-sub">Standard</div></div>
+    <div class="coat-btn" id="coat-2" onclick="setCoats(2)"><div class="coat-name">2 COATS</div><div class="coat-sub">+100% material</div></div>
+  </div>
+  <div class="sec-label">➕ Add-ons</div>
+  <div class="card">
+    <div class="addon-item">
+      <div class="addon-check" id="chk-crack" onclick="toggleAddon('crack')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3 3 7-7" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div class="addon-name">Crack Filling</div><div class="addon-desc">Hot rubber filler per linear foot.</div><div class="addon-sub" id="sub-crack" style="display:none"><div class="field-label">Linear Feet</div><input type="number" id="crack-ft" placeholder="0" oninput="calcAddons()"></div></div>
+      <div class="addon-price">+est.</div>
+    </div>
+    <div class="addon-item">
+      <div class="addon-check" id="chk-oil" onclick="toggleAddon('oil')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3 3 7-7" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div class="addon-name">Oil Stain Treatment</div><div class="addon-desc">Primer per spot. Required for quality finish.</div><div class="addon-sub" id="sub-oil" style="display:none"><div class="field-label">Number of Spots</div><input type="number" id="oil-spots" placeholder="0" oninput="calcAddons()"></div></div>
+      <div class="addon-price">+est.</div>
+    </div>
+    <div class="addon-item">
+      <div class="addon-check" id="chk-wash" onclick="toggleAddon('wash')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3 3 7-7" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div class="addon-name">Power Washing</div><div class="addon-desc">Required if dirty or has moss.</div></div>
+      <div class="addon-price">+$50</div>
+    </div>
+    <div class="addon-item">
+      <div class="addon-check" id="chk-edge" onclick="toggleAddon('edge')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3 3 7-7" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div class="addon-name">Edge Overgrowth</div><div class="addon-desc">Grass overlapping asphalt — power edger required.</div></div>
+      <div class="addon-price">+$50</div>
+    </div>
+    <div class="addon-item">
+      <div class="addon-check" id="chk-pothole" onclick="toggleAddon('pothole')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3 3 7-7" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div class="addon-name">Pothole Patching</div><div class="addon-desc">Cold-patch fill, compacted and levelled.</div><div class="addon-sub" id="sub-pothole" style="display:none"><div class="field-label">Patch Area (ft²)</div><input type="number" id="pothole-ft" placeholder="0" oninput="calcAddons()"></div></div>
+      <div class="addon-price">+est.</div>
+    </div>
+    <div class="discount-row">
+      <div class="addon-check" id="chk-repeat" onclick="toggleAddon('repeat')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3 3 7-7" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div class="addon-name">Repeat Customer</div><div class="addon-desc">10% loyalty discount on total</div></div>
+      <div class="discount-pill">−10%</div>
+    </div>
+  </div>
+  <div class="costs-card">
+    <div class="costs-hdr" onclick="toggleCosts()">🛢️ Your Costs (Internal)<span>Min: <strong id="min-quote">$250</strong> <span id="costs-arrow">▼</span></span></div>
+    <div class="costs-body" id="costs-body">
+      <div class="cost-row"><span>Sealer buckets</span><span id="c-buckets">—</span></div>
+      <div class="cost-row"><span>Labour est.</span><span id="c-labour">—</span></div>
+      <div class="cost-row"><span>Add-ons</span><span id="c-addons">$0</span></div>
+      <div class="cost-total"><span>Est. cost</span><span id="c-total">—</span></div>
+    </div>
+  </div>
+  <div class="notes-card">
+    <div class="notes-hdr" onclick="toggleNotes()">📋 Job Notes & Photos <span id="notes-arrow">▼</span></div>
+    <div class="notes-body" id="notes-body">
+      <textarea id="job-notes" placeholder="Notes, access instructions, special conditions…"></textarea>
+      <div style="margin-top:8px"><input type="file" id="photo-input" accept="image/*" multiple onchange="addPhotos(this)" style="font-size:.75rem;color:rgba(255,255,255,.4);border:none;background:none;padding:0"></div>
+      <div id="photo-preview" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+    </div>
+  </div>
+  <button class="gen-btn" onclick="calculate()">⚡ Generate Quote</button>
+  <div class="quote-card" id="quote-card">
+    <div class="quote-total" id="ph-price">—</div>
+    <div class="quote-sub" id="ph-sub">—</div>
+    <div class="quote-breakdown" id="quote-breakdown"></div>
+    <div class="sms-section">
+      <div class="sms-label">📱 Send Quote to Customer</div>
+      <div class="sms-row"><input type="tel" id="sms-phone" placeholder="905-555-0100"><button class="sms-btn" onclick="sendSMS()">SEND</button></div>
+      <div class="sms-status" id="sms-status"></div>
+    </div>
+  </div>
+  <div class="footer">PAVCOR Contracting & Renovations · Ancaster, ON · Internal Use Only</div>
+</div>
+<script>
+var cond="good",coats=1,rateUnlocked=false,PIN="0375";
+var BUCKET_SQ=250,BUCKET_COST=66;
+var addons={crack:false,oil:false,wash:false,edge:false,pothole:false,repeat:false};
 
-  <!-- ── CANVAS ANIMATION ───────────────────────────────────── -->
-  <script>
-    const c = document.getElementById('canvas');
-    const ctx = c.getContext('2d');
+(function(){
+  var c=document.getElementById("c"),ctx=c.getContext("2d"),S=[],W,H;
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  function init(){S=[];var n=Math.floor(W*H/2600);for(var i=0;i<n;i++)S.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,vx:(Math.random()-.5)*.07,vy:Math.random()*.13+.03,op:Math.random()*.82+.15,tw:Math.random()*Math.PI*2,ts:Math.random()*.018+.004});}
+  function draw(){ctx.clearRect(0,0,W,H);for(var i=0;i<S.length;i++){var s=S[i];s.tw+=s.ts;s.x+=s.vx;s.y+=s.vy;if(s.y>H){s.y=0;s.x=Math.random()*W;}if(s.x<0)s.x=W;if(s.x>W)s.x=0;var op=s.op*(.55+.45*Math.sin(s.tw));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="rgba(255,255,255,"+op+")";ctx.fill();}requestAnimationFrame(draw);}
+  resize();init();draw();
+  window.addEventListener("resize",function(){resize();init();});
+})();
 
-    let w = c.width = window.innerWidth;
-    let h = c.height = window.innerHeight;
+async function fetchWeather(){
+  try{
+    var r=await fetch("https://api.open-meteo.com/v1/forecast?latitude=43.2557&longitude=-79.8711&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=America/Toronto");
+    var d=await r.json();var c=d.current;var code=c.weather_code;
+    var icons={0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",51:"🌦️",53:"🌦️",55:"🌧️",61:"🌧️",63:"🌧️",65:"🌧️",71:"🌨️",73:"🌨️",75:"❄️",80:"🌦️",81:"🌦️",82:"⛈️",95:"⛈️"};
+    var descs={0:"Clear sky",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Foggy",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",71:"Light snow",73:"Snow",75:"Heavy snow",80:"Rain showers",81:"Showers",82:"Violent showers",95:"Thunderstorm"};
+    document.getElementById("w-icon").textContent=icons[code]||"🌡️";
+    document.getElementById("w-temp").textContent=Math.round(c.temperature_2m)+"°C  —  "+(descs[code]||"Unknown");
+    document.getElementById("w-right").innerHTML="💨 "+Math.round(c.wind_speed_10m)+" km/h<br>"+(c.precipitation>0?"🌧️ "+c.precipitation+"mm":"No precip");
+    if([61,63,65,80,81,82,95,71,73,75].indexOf(code)>=0)document.getElementById("weather-card").style.borderColor="rgba(255,80,80,.4)";
+  }catch(e){document.getElementById("w-temp").textContent="Weather unavailable";}
+}
+fetchWeather();
 
-    window.addEventListener('resize', () => {
-      w = c.width = window.innerWidth;
-      h = c.height = window.innerHeight;
-    });
+function updateSqft(){
+  var L=parseFloat(document.getElementById("len").value)||0;
+  var W=parseFloat(document.getElementById("wid").value)||0;
+  var sqft=(L&&W)?Math.round(L*W):0;
+  document.getElementById("sqft-display").textContent=sqft?(sqft.toLocaleString()+" SQ FT"):"— SQ FT";
+  if(sqft){
+    var buckets=Math.ceil(sqft*coats/BUCKET_SQ);
+    document.getElementById("c-buckets").textContent=buckets+"x $"+BUCKET_COST+" = $"+(buckets*BUCKET_COST);
+    document.getElementById("c-labour").textContent="$"+Math.round(sqft*0.05*coats);
+    updateMinQuote();
+  }
+}
 
-    // Mix of small fast dots and a few larger slow ones — exactly as in screenshot
-    let particles = [];
+function updateRateDisplay(){
+  var v=parseFloat(document.getElementById("rate").value)/100;
+  document.getElementById("rate-val").textContent="$"+v.toFixed(2)+"/ft²";
+}
 
-    // 140 small particles (radius 0.4–1.6, speed ±0.5)
-    for (let i = 0; i < 140; i++) {
-      particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        r: Math.random() * 1.2 + 0.4
-      });
+function showPinBox(){
+  var el=document.getElementById("pin-overlay");
+  el.style.display=el.style.display==="block"?"none":"block";
+}
+
+function checkPin(val){
+  if(val.length===4){
+    if(val===PIN){
+      rateUnlocked=true;
+      document.getElementById("rate").disabled=false;
+      document.getElementById("rate-locked-msg").textContent="🔓 Rate unlocked";
+      document.getElementById("pin-overlay").style.display="none";
+    } else {
+      var inp=document.getElementById("pin-overlay").querySelector("input");
+      inp.style.borderColor="rgba(255,80,80,.6)";
+      setTimeout(function(){inp.value="";inp.style.borderColor="rgba(201,168,76,.4)";},600);
     }
+  }
+}
+</script>
+<script>
+function setCond(c){
+  cond=c;
+  ["good","fair","poor"].forEach(function(x){document.getElementById("cond-"+x).classList.toggle("active",x===c);});
+  var rateMap={good:55,fair:50,poor:50};
+  if(!rateUnlocked){document.getElementById("rate").value=rateMap[c];updateRateDisplay();}
+}
 
-    // 12 larger slow particles (radius 1.5–4.5, speed ±0.2)
-    for (let i = 0; i < 12; i++) {
-      particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2,
-        r: Math.random() * 3 + 1.5
-      });
-    }
+function setCoats(n){
+  coats=n;
+  document.getElementById("coat-1").classList.toggle("active",n===1);
+  document.getElementById("coat-2").classList.toggle("active",n===2);
+  updateSqft();
+}
 
-    function animate() {
-      // Slight trail fade — 0.06 alpha fill creates the motion blur in screenshot
-      ctx.fillStyle = 'rgba(10,14,23,0.06)';
-      ctx.fillRect(0, 0, w, h);
+function toggleAddon(key){
+  addons[key]=!addons[key];
+  document.getElementById("chk-"+key).classList.toggle("checked",addons[key]);
+  var sub=document.getElementById("sub-"+key);
+  if(sub)sub.style.display=addons[key]?"block":"none";
+  calcAddons();
+}
 
-      // Draw connecting lines between nearby particles
-      // Skip every other particle (i+=2, j+=2) for performance, matching density in screenshot
-      for (let i = 0; i < particles.length; i += 2) {
-        for (let j = i + 1; j < particles.length; j += 2) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const d = Math.hypot(dx, dy);
-          if (d < 160) {
-            // Line fades with distance — 0.09 max alpha = very subtle as in screenshot
-            const alpha = (1 - d / 160) * 0.09;
-            ctx.strokeStyle = `rgba(107,114,128,${alpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
+function calcAddons(){
+  var total=0;
+  if(addons.wash)total+=50;
+  if(addons.edge)total+=50;
+  if(addons.crack){var ft=parseFloat(document.getElementById("crack-ft").value)||0;total+=ft*3;}
+  if(addons.oil){var spots=parseFloat(document.getElementById("oil-spots").value)||0;total+=spots*15;}
+  if(addons.pothole){var pft=parseFloat(document.getElementById("pothole-ft").value)||0;total+=pft*8;}
+  document.getElementById("c-addons").textContent="$"+total;
+  return total;
+}
 
-      // Draw dots
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        // Bounce off edges
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
+function updateMinQuote(){
+  var L=parseFloat(document.getElementById("len").value)||0;
+  var W=parseFloat(document.getElementById("wid").value)||0;
+  var sqft=(L&&W)?Math.round(L*W):0;
+  var rate=parseFloat(document.getElementById("rate").value)/100;
+  var base=Math.max(250,sqft*rate*coats);
+  document.getElementById("min-quote").textContent="$"+Math.round(base);
+}
 
-        ctx.globalAlpha = 0.4;
-        ctx.fillStyle = '#6b7280'; // grey-500 — matches screenshot dot colour
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
+function calculate(){
+  var L=parseFloat(document.getElementById("len").value)||0;
+  var W=parseFloat(document.getElementById("wid").value)||0;
+  var sqft=(L&&W)?Math.round(L*W):0;
+  if(!sqft){alert("Enter driveway dimensions first.");return;}
+  var rate=parseFloat(document.getElementById("rate").value)/100;
+  var base=sqft*rate*coats;
+  var addonTotal=calcAddons();
+  var subtotal=base+addonTotal;
+  if(addons.repeat)subtotal*=0.9;
+  var total=Math.max(250,Math.round(subtotal));
+  document.getElementById("ph-price").textContent="$"+total.toLocaleString()+" CAD";
+  var condLabel={good:"Good",fair:"Fair",poor:"Poor"}[cond];
+  document.getElementById("ph-sub").textContent=sqft.toLocaleString()+" ft² · "+coats+" coat"+(coats>1?"s":"")+" · "+condLabel+" · $"+rate.toFixed(2)+"/ft²";
+  var bkd=sqft.toLocaleString()+" ft² × $"+rate.toFixed(2)+" × "+coats+" coat"+(coats>1?"s":"")+" = $"+Math.round(base);
+  if(addonTotal>0)bkd+="\nAdd-ons: +$"+addonTotal;
+  if(addons.repeat)bkd+="\nRepeat customer: −10%";
+  if(total===250)bkd+="\n(Minimum job charge)";
+  document.getElementById("quote-breakdown").textContent=bkd;
+  var buckets=Math.ceil(sqft*coats/BUCKET_SQ);
+  var labour=Math.round(sqft*0.05*coats);
+  document.getElementById("c-total").textContent="$"+(buckets*BUCKET_COST+labour+addonTotal);
+  var card=document.getElementById("quote-card");
+  card.classList.add("show");
+  card.scrollIntoView({behavior:"smooth",block:"nearest"});
+  var phone=document.getElementById("cust-phone").value;
+  if(phone)document.getElementById("sms-phone").value=phone;
+}
 
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(animate);
-    }
+async function sendSMS(){
+  var phone=document.getElementById("sms-phone").value.trim();
+  var quote=document.getElementById("ph-price").textContent;
+  var sub=document.getElementById("ph-sub").textContent;
+  var name=document.getElementById("cust-name").value.trim();
+  var addr=document.getElementById("cust-addr").value.trim();
+  var notes=document.getElementById("job-notes").value.trim();
+  if(!phone){document.getElementById("sms-status").textContent="⚠️ Enter a phone number first";return;}
+  if(!quote||quote==="—"){document.getElementById("sms-status").textContent="⚠️ Generate a quote first";return;}
+  var nameStr=name?"Hi "+name.split(" ")[0]+", ":"Hi there, ";
+  var addrStr=addr?" for "+addr:"";
+  var msg=nameStr+"here's your PAVCOR driveway sealing quote"+addrStr+":\n\nTotal: "+quote+"\n"+sub+"\n\nCash or e-transfer. Driveway ready in ~4 hours.\n\n- PAVCOR Contracting & Renovations\n905-512-3789 | pavcor.ca"+(notes?"\n\nNotes: "+notes:"");
+  document.getElementById("sms-status").textContent="Sending…";
+  try{
+    var res=await fetch("https://api.orao.app/api/send-sms",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({to:phone,message:msg})});
+    document.getElementById("sms-status").textContent=res.ok?"✅ Quote sent to "+phone:"❌ Send failed — check number";
+  }catch(e){document.getElementById("sms-status").textContent="❌ Network error";}
+}
 
-    animate();
+function toggleCosts(){
+  var b=document.getElementById("costs-body");
+  var a=document.getElementById("costs-arrow");
+  b.classList.toggle("open");
+  a.textContent=b.classList.contains("open")?"▲":"▼";
+}
 
-    // ── FORM SUBMISSION ────────────────────────────────────────
-    const form = document.querySelector('form');
-    if (form) {
-      form.addEventListener('submit', async e => {
-        e.preventDefault();
-        try {
-          await fetch('/', { method: 'POST', body: new FormData(e.target) });
-        } catch (_) {}
+function toggleNotes(){
+  var b=document.getElementById("notes-body");
+  var a=document.getElementById("notes-arrow");
+  b.classList.toggle("open");
+  a.textContent=b.classList.contains("open")?"▲":"▼";
+}
 
-        e.target.style.display = 'none';
+function addPhotos(input){
+  var preview=document.getElementById("photo-preview");
+  Array.from(input.files).forEach(function(file){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var img=document.createElement("img");
+      img.src=e.target.result;
+      img.style.cssText="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.1)";
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
-        const success = document.createElement('div');
-        success.style.cssText = 'font-size:1.8rem;color:#fff;font-weight:700;margin-top:32px;text-align:center;animation:bounce 1s infinite';
-        success.textContent = "You're in! 🚀 Check your inbox.";
-        document.getElementById('waitlist').appendChild(success);
-
-        // Confetti
-        for (let i = 0; i < 60; i++) {
-          const conf = document.createElement('div');
-          conf.style.cssText = `
-            position:fixed;z-index:9999;
-            left:${Math.random() * 100}vw;top:-10px;
-            width:6px;height:6px;
-            background:#6b7280;
-            opacity:${Math.random() * 0.6 + 0.4};
-            transform:rotate(${Math.random() * 360}deg);
-          `;
-          document.body.appendChild(conf);
-          conf.animate([
-            { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
-            { transform: `translateY(100vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-          ], { duration: Math.random() * 1800 + 1200, easing: 'ease-out' });
-          setTimeout(() => conf.remove(), 2600);
-        }
-      });
-    }
-  </script>
-
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.ctrlKey)calculate();});
+</script>
 </body>
 </html>
