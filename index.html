@@ -120,6 +120,13 @@
     transition: background 0.2s, color 0.2s;
   }
   .nav-cta:hover { background: var(--off-white); }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .nav-phone { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.12em; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 7px; transition: color 0.2s; }
+  .nav-phone:hover { color: var(--off-white); }
+  .nav-phone svg { display: block; }
+  .call-fab { position: fixed; bottom: 24px; left: 24px; z-index: 150; display: flex; align-items: center; gap: 9px; background: #fff; color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.08em; padding: 13px 22px; border-radius: 40px; text-decoration: none; box-shadow: 0 4px 20px rgba(0,0,0,0.4); transition: background 0.2s; }
+  .call-fab:hover { background: var(--off-white); }
+  @media (max-width: 768px) { .nav-phone { display: none; } }
 
   /* HERO */
   #hero {
@@ -1086,8 +1093,12 @@
     <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Quote</button>
+  <div class="nav-right">
+    <a class="nav-phone" href="tel:9055123789"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>905-512-3789</a>
+    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Quote</button>
+  </div>
 </nav>
+<a class="call-fab" href="tel:9055123789" aria-label="Call PAVCOR 905-512-3789"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>905-512-3789</a>
 
 <!-- HERO -->
 <section id="hero">
@@ -1632,7 +1643,7 @@ function revealContact() {
 
   if (panel.classList.contains('visible')) {
     // Assemble from parts — makes scraping harder
-    const p = ['905', '512', '2789'];
+    const p = ['905', '512', '3789'];
     const e = ['pavcorinc', 'gmail', 'com'];
     const phone = p[0] + '-' + p[1] + '-' + p[2];
     const email = e[0] + '@' + e[1] + '.' + e[2];
